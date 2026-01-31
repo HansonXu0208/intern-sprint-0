@@ -25,3 +25,10 @@ Requires Node installed.
 
 ```bash
 node test.js
+
+## Status
+Intern Sprint 0 completed.
+- Git workflow ✔
+- Feature implementation ✔
+- Smoke test ✔
+- Documentation ✔
