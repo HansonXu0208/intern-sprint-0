@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CoinGecko Price Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+    .status {
+      margin-top: 20px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bitcoin Price (USD)</h1>
+
+  <button id="loadBtn">Load price</button>
+
+  <div id="status" class="status"></div>
+
+  <script>
+    const statusEl = document.getElementById("status");
+    const loadBtn = document.getElementById("loadBtn");
+
+    loadBtn.addEventListener("click", async () => {
+      statusEl.textContent = "Loading...";
+      statusEl.className = "status";
+
+      try {
+        const res = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+        );
+
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await res.json();
+        const price = data.bitcoin.usd;
+
+        statusEl.textContent = `Current price: $${price}`;
+      } catch (err) {
+        statusEl.textContent = "Failed to load price. Please try again.";
+        statusEl.className = "status error";
+      }
+    });
+  </script>
+</body>
+</html>
