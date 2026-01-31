@@ -1,21 +1,47 @@
-## Problem statement
-Provide a simple web page that fetches and displays the current Bitcoin price in USD using a public API.
+# Spec: Bitcoin Price (USD) — CoinGecko Fetch + Smoke Test
 
-## Proposed solution
-Create a minimal static HTML page that calls the CoinGecko API via fetch and displays the price on user interaction.
+## 1. Problem statement
+We need a minimal, dependency-light demo that:
+- Displays the current Bitcoin price in USD in a browser
+- Provides a simple smoke test to validate the API response shape
 
-## Acceptance criteria
-- A button triggers the API request
-- A loading message is shown while fetching
-- The Bitcoin price (USD) is displayed on success
-- A user-friendly error message is shown on failure
+This is intended for Intern Sprint 0 / Day 2 and should be runnable without a build system.
 
-## Edge cases / risks
-- Network failure or API downtime
-- Non-200 HTTP responses
+## 2. Proposed solution
+- Add `index.html` as a static page with:
+  - Title: "Bitcoin Price (USD)"
+  - A button that triggers a fetch to CoinGecko
+  - A text area that displays "Current price: $<value>"
+- Add `test.js` as a Node-based smoke test that:
+  - Calls the same CoinGecko endpoint
+  - Validates the response includes a numeric BTC USD price
+  - Prints `PASS: ...` on success, exits non-zero on failure
 
-## Implementation plan
-1. Create a static HTML file
-2. Use fetch to call CoinGecko API
-3. Handle loading, success, and error states
-4. Manually test in browser
+## 3. Acceptance criteria (checklist)
+- [ ] Opening `index.html` in a browser shows a heading and a "Load price" button
+- [ ] Clicking "Load price" fetches BTC price and updates the page with a USD value
+- [ ] The UI handles fetch errors gracefully (shows an error message instead of crashing)
+- [ ] `node test.js` prints a `PASS` line when the API responds correctly
+- [ ] `node test.js` exits with non-zero status if the response is missing expected fields or price is not numeric
+
+## 4. Edge cases / risks
+- Network issues / corporate proxy / DNS problems
+- CoinGecko rate limiting (HTTP 429) or temporary downtime
+- API shape changes (fields renamed or nested differently)
+- Node runtime differences on Windows (rare async handle warnings)
+
+## 5. Implementation plan (steps)
+1. Implement `index.html`:
+   - Render title, button, and output area
+   - On click: fetch CoinGecko price endpoint and parse JSON
+   - Update DOM with formatted USD price
+   - Handle errors with a user-friendly message
+2. Implement `test.js`:
+   - Fetch the same endpoint
+   - Validate JSON shape and numeric price
+   - Print PASS/FAIL, use exit codes
+3. Document in `README.md`:
+   - How to run (open HTML)
+   - How to run test (node test.js)
+   - Explain file layout and expected output
+4. Open PR and ensure changes are small and focused
